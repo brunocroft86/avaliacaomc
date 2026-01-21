@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mulheres Conectadas - Prof. Bruno Galvão</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        :root {
+            --primary: #ff0055;       /* Rosa Vibrante */
+            --primary-dark: #b3003b;  /* Vinho/Rosa Escuro para textos */
+            --primary-light: #ffe6eb;
+            --success: #00b894;       
+            --error: #d63031;         
+            --white: #ffffff;
+            --bg-gray: #f0f0f0;
+            --text-black: #000000;    /* Preto Absoluto para leitura */
+            --text-dark: #1a1a1a;
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--primary); 
+            margin: 0; padding: 0; color: var(--text-black);
+        }
+
+        /* --- CABEÇALHO --- */
+        .header-banner {
+            background: url('imagem/MC\ LOgo.jpeg') no-repeat center center;
+            background-size: cover;
+            padding: 10px 10px 100px; 
+            text-align: center;
+            position: relative;
+        }
+
+        /* Degradê suave apenas no finalzinho para unir com o corpo rosa */
+        .header-banner::after {
+            content: "";
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 100px;
+            background: linear-gradient(to bottom, transparent, var(--primary));
+        }
+
+        .header-content { position: relative; z-index: 2; }
+
+        .prof-foto {
+            width: 200px; height: 200px; border-radius: 50%;
+            border: 6px solid var(--primary); /* Borda rosa para destacar */
+            object-fit: cover; background: white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            animation: float 5s ease-in-out infinite;
+        }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+        /* TÍTULO ESCURO COM CONTORNO BRANCO (Legível em qualquer fundo) */
+        h1 { 
+            font-size: 3.5rem; margin: 15px 0 5px; 
+            color: var(--primary-dark); /* Cor escura */
+            text-shadow: 
+                3px 3px 0 #fff,
+                -1px -1px 0 #fff,  
+                1px -1px 0 #fff,
+                -1px 1px 0 #fff,
+                1px 1px 0 #fff;
+            letter-spacing: -1px;
+            font-weight: 800;
+        }
+
+        .subtitle { 
+            font-weight: 700; font-size: 1.6rem; 
+            color: #222; /* Cinza quase preto */
+            background: rgba(255, 255, 255, 0.8); /* Fundo branco semi-transparente */
+            display: inline-block;
+            padding: 5px 25px; border-radius: 50px; margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* --- CONTAINER DO QUIZ --- */
+        .container { 
+            max-width: 800px; margin: -60px auto 80px; 
+            background: var(--bg-gray); padding: 40px; 
+            border-radius: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative; z-index: 3;
+        }
+
+        /* --- QUESTÕES --- */
+        .question { 
+            background: var(--white);
+            margin-bottom: 30px; padding: 30px; 
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 8px solid var(--primary);
+        }
+
+        .question h3 { 
+            margin: 0 0 20px; font-size: 1.3rem; 
+            color: var(--text-black); /* Texto preto */
+            display: flex; align-items: center;
+        }
+        
+        .question-number {
+            background: var(--primary); color: white;
+            min-width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 15px; font-size: 1.1rem; font-weight: bold;
+        }
+
+        /* --- OPÇÕES --- */
+        .options { display: grid; gap: 12px; }
+
+        .option-label { 
+            display: flex; align-items: center;
+            padding: 18px 20px; 
+            border-radius: 12px; 
+            background: var(--white); 
+            border: 2px solid #ccc; /* Borda mais visível */
+            cursor: pointer; 
+            transition: all 0.2s ease;
+            font-weight: 600; /* Texto mais grosso */
+            color: var(--text-dark); /* Texto escuro */
+            font-size: 1.1rem;
+        }
+
+        .option-label input { display: none; }
+
+        .custom-radio {
+            width: 22px; height: 22px;
+            border: 3px solid #999; border-radius: 50%;
+            margin-right: 15px; position: relative;
+        }
+
+        .custom-radio::after {
+            content: ''; position: absolute;
+            top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            width: 12px; height: 12px; background: white; border-radius: 50%;
+            transition: transform 0.2s;
+        }
+
+        /* Hover */
+        .option-label:hover { 
+            border-color: var(--primary); 
+            background: var(--primary-light);
+            color: black;
+        }
+
+        /* Selecionado */
+        .option-label.selected {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 0, 85, 0.3);
+        }
+        .option-label.selected .custom-radio { border-color: white; }
+        .option-label.selected .custom-radio::after { transform: translate(-50%, -50%) scale(1); }
+
+        /* --- CORREÇÃO --- */
+        .option-label.correct-answer {
+            background-color: var(--success) !important;
+            border-color: var(--success) !important;
+            color: white !important;
+            animation: heartBeat 1s;
+        }
+        
+        .option-label.wrong-answer {
+            background-color: var(--error) !important;
+            border-color: var(--error) !important;
+            color: white !important;
+            animation: headShake 0.5s;
+        }
+
+        .option-label.was-correct {
+            border: 3px dashed var(--success) !important;
+            background-color: #e6fffa !important;
+            color: #006400 !important; /* Verde escuro para leitura */
+            font-weight: 800;
+        }
+
+        .feedback { 
+            margin-top: 15px; font-weight: 800; padding: 15px; border-radius: 8px; 
+            text-align: center; display: none; font-size: 1.1rem;
+        }
+        .feedback.ok { color: #006400; background: #ccffdd; border: 2px solid var(--success); }
+        .feedback.no { color: #8b0000; background: #ffcccc; border: 2px solid var(--error); }
+
+        /* --- BOTÃO --- */
+        .btn-action { 
+            width: 100%; padding: 25px; 
+            background: var(--primary-dark); color: white;
+            border: none; border-radius: 50px; 
+            font-size: 1.5rem; font-weight: 800; cursor: pointer; 
+            transition: 0.3s; text-transform: uppercase; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            margin-top: 20px;
+        }
+
+        .btn-action:hover { background: #960032; transform: scale(1.02); }
+
+        #result-box { 
+            display: none; text-align: center; margin-top: 40px; padding: 30px;
+            background: white; border-radius: 20px; border: 6px solid var(--primary);
+            animation: bounceInUp 1s;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-banner">
+    <div class="header-content animate__animated animate__fadeInDown">
+        <img src="imagem/WhatsApp Image 2026-01-20 at 22.45.00.jpeg" alt="Prof. Bruno Galvão" class="prof-foto">
+        <h1>Mulheres Conectadas</h1>
+        <div class="subtitle">Testando seus conhecimentos • Prof. Bruno Galvão</div>
+    </div>
+</div>
+
+<div class="container animate__animated animate__fadeInUp">
+    <form id="quizForm">
+        
+        <div class="question" id="q1">
+            <h3><span class="question-number">1</span> O que significa a palavra Informática?</h3>
+            <div class="options">
+                <label class="option-label" onclick="selectOption(this, 'q1')">
+                    <input type="radio" name="q1" value="0"> <div class="custom-radio"></div> Internet e Jogos
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q1')">
+                    <input type="radio" name="q1" value="1"> <div class="custom-radio"></div> Informação + Automática
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q1')">
+                    <input type="radio" name="q1" value="0"> <div class="custom-radio"></div> Conserto de PC
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q1')">
+                    <input type="radio" name="q1" value="0"> <div class="custom-radio"></div> Apenas Digitação
+                </label>
+            </div>
+            <div class="feedback" id="f1"></div>
+        </div>
+
+        <div class="question" id="q2">
+            <h3><span class="question-number">2</span> O que é Hardware?</h3>
+            <div class="options">
+                <label class="option-label" onclick="selectOption(this, 'q2')">
+                    <input type="radio" name="q2" value="1"> <div class="custom-radio"></div> Parte física (mouse, teclado)
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q2')">
+                    <input type="radio" name="q2" value="0"> <div class="custom-radio"></div> Parte lógica (programas)
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q2')">
+                    <input type="radio" name="q2" value="0"> <div class="custom-radio"></div> A internet
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q2')">
+                    <input type="radio" name="q2" value="0"> <div class="custom-radio"></div> Um vírus
+                </label>
+            </div>
+            <div class="feedback" id="f2"></div>
+        </div>
+
+        <div class="question" id="q3">
+            <h3><span class="question-number">3</span> O Word é um programa usado para:</h3>
+            <div class="options">
+                <label class="option-label" onclick="selectOption(this, 'q3')">
+                    <input type="radio" name="q3" value="0"> <div class="custom-radio"></div> Fazer contas
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q3')">
+                    <input type="radio" name="q3" value="1"> <div class="custom-radio"></div> Criar textos e documentos
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q3')">
+                    <input type="radio" name="q3" value="0"> <div class="custom-radio"></div> Editar vídeos
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q3')">
+                    <input type="radio" name="q3" value="0"> <div class="custom-radio"></div> Ouvir música
+                </label>
+            </div>
+            <div class="feedback" id="f3"></div>
+        </div>
+
+        <div class="question" id="q4">
+            <h3><span class="question-number">4</span> Qual atalho usamos para COPIAR?</h3>
+            <div class="options">
+                <label class="option-label" onclick="selectOption(this, 'q4')">
+                    <input type="radio" name="q4" value="0"> <div class="custom-radio"></div> Ctrl + V
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q4')">
+                    <input type="radio" name="q4" value="1"> <div class="custom-radio"></div> Ctrl + C
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q4')">
+                    <input type="radio" name="q4" value="0"> <div class="custom-radio"></div> Ctrl + P
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q4')">
+                    <input type="radio" name="q4" value="0"> <div class="custom-radio"></div> Alt + F4
+                </label>
+            </div>
+            <div class="feedback" id="f4"></div>
+        </div>
+
+        <div class="question" id="q5">
+            <h3><span class="question-number">5</span> No Excel, um quadradinho da tabela chama-se:</h3>
+            <div class="options">
+                <label class="option-label" onclick="selectOption(this, 'q5')">
+                    <input type="radio" name="q5" value="0"> <div class="custom-radio"></div> Bloco
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q5')">
+                    <input type="radio" name="q5" value="0"> <div class="custom-radio"></div> Tabela
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q5')">
+                    <input type="radio" name="q5" value="1"> <div class="custom-radio"></div> Célula
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q5')">
+                    <input type="radio" name="q5" value="0"> <div class="custom-radio"></div> Página
+                </label>
+            </div>
+            <div class="feedback" id="f5"></div>
+        </div>
+
+        <div class="question" id="q6">
+            <h3><span class="question-number">6</span> O PowerPoint serve principalmente para:</h3>
+            <div class="options">
+                <label class="option-label" onclick="selectOption(this, 'q6')">
+                    <input type="radio" name="q6" value="1"> <div class="custom-radio"></div> Criar apresentações (slides)
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q6')">
+                    <input type="radio" name="q6" value="0"> <div class="custom-radio"></div> Enviar e-mail
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q6')">
+                    <input type="radio" name="q6" value="0"> <div class="custom-radio"></div> Navegar no Facebook
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q6')">
+                    <input type="radio" name="q6" value="0"> <div class="custom-radio"></div> Escrever livros longos
+                </label>
+            </div>
+            <div class="feedback" id="f6"></div>
+        </div>
+
+        <div class="question" id="q7">
+            <h3><span class="question-number">7</span> O Google Chrome é um exemplo de:</h3>
+            <div class="options">
+                <label class="option-label" onclick="selectOption(this, 'q7')">
+                    <input type="radio" name="q7" value="0"> <div class="custom-radio"></div> Antivírus
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q7')">
+                    <input type="radio" name="q7" value="1"> <div class="custom-radio"></div> Navegador (Browser)
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q7')">
+                    <input type="radio" name="q7" value="0"> <div class="custom-radio"></div> Jogo
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q7')">
+                    <input type="radio" name="q7" value="0"> <div class="custom-radio"></div> Editor de Foto
+                </label>
+            </div>
+            <div class="feedback" id="f7"></div>
+        </div>
+
+        <div class="question" id="q8">
+            <h3><span class="question-number">8</span> Um "Hyperlink" serve para:</h3>
+            <div class="options">
+                <label class="option-label" onclick="selectOption(this, 'q8')">
+                    <input type="radio" name="q8" value="1"> <div class="custom-radio"></div> Levar a outra página ao clicar
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q8')">
+                    <input type="radio" name="q8" value="0"> <div class="custom-radio"></div> Desligar o computador
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q8')">
+                    <input type="radio" name="q8" value="0"> <div class="custom-radio"></div> Salvar um arquivo
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q8')">
+                    <input type="radio" name="q8" value="0"> <div class="custom-radio"></div> Imprimir
+                </label>
+            </div>
+            <div class="feedback" id="f8"></div>
+        </div>
+
+        <div class="question" id="q9">
+            <h3><span class="question-number">9</span> O que é "Download"?</h3>
+            <div class="options">
+                <label class="option-label" onclick="selectOption(this, 'q9')">
+                    <input type="radio" name="q9" value="0"> <div class="custom-radio"></div> Enviar arquivo para a nuvem
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q9')">
+                    <input type="radio" name="q9" value="1"> <div class="custom-radio"></div> Baixar arquivo da internet
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q9')">
+                    <input type="radio" name="q9" value="0"> <div class="custom-radio"></div> Formatar o PC
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q9')">
+                    <input type="radio" name="q9" value="0"> <div class="custom-radio"></div> Criar uma pasta
+                </label>
+            </div>
+            <div class="feedback" id="f9"></div>
+        </div>
+
+        <div class="question" id="q10">
+            <h3><span class="question-number">10</span> No PowerPoint, a tecla F5 serve para:</h3>
+            <div class="options">
+                <label class="option-label" onclick="selectOption(this, 'q10')">
+                    <input type="radio" name="q10" value="0"> <div class="custom-radio"></div> Fechar o programa
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q10')">
+                    <input type="radio" name="q10" value="0"> <div class="custom-radio"></div> Salvar
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q10')">
+                    <input type="radio" name="q10" value="1"> <div class="custom-radio"></div> Iniciar a apresentação
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q10')">
+                    <input type="radio" name="q10" value="0"> <div class="custom-radio"></div> Apagar slide
+                </label>
+            </div>
+            <div class="feedback" id="f10"></div>
+        </div>
+
+        <div class="question" id="q11">
+            <h3><span class="question-number">11</span> Escrever tudo em MAIÚSCULAS na web significa:</h3>
+            <div class="options">
+                <label class="option-label" onclick="selectOption(this, 'q11')">
+                    <input type="radio" name="q11" value="0"> <div class="custom-radio"></div> Que você é educado
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q11')">
+                    <input type="radio" name="q11" value="1"> <div class="custom-radio"></div> Que você está GRITANDO
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q11')">
+                    <input type="radio" name="q11" value="0"> <div class="custom-radio"></div> Que é urgente
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q11')">
+                    <input type="radio" name="q11" value="0"> <div class="custom-radio"></div> Nada demais
+                </label>
+            </div>
+            <div class="feedback" id="f11"></div>
+        </div>
+
+        <div class="question" id="q12">
+            <h3><span class="question-number">12</span> Para segurança, senha forte deve ter:</h3>
+            <div class="options">
+                <label class="option-label" onclick="selectOption(this, 'q12')">
+                    <input type="radio" name="q12" value="0"> <div class="custom-radio"></div> Apenas seu nome
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q12')">
+                    <input type="radio" name="q12" value="0"> <div class="custom-radio"></div> 123456
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q12')">
+                    <input type="radio" name="q12" value="0"> <div class="custom-radio"></div> Data de nascimento
+                </label>
+                <label class="option-label" onclick="selectOption(this, 'q12')">
+                    <input type="radio" name="q12" value="1"> <div class="custom-radio"></div> Letras, números e símbolos
+                </label>
+            </div>
+            <div class="feedback" id="f12"></div>
+        </div>
+
+        <button type="button" class="btn-action" onclick="corrigirQuiz()">CORRIGIR AGORA ✨</button>
+    </form>
+
+    <div id="result-box"></div>
+</div>
+
+<script>
+    function selectOption(label, groupName) {
+        const allLabels = document.querySelectorAll(`input[name="${groupName}"]`);
+        allLabels.forEach(input => {
+            input.parentElement.classList.remove('selected');
+        });
+        label.classList.add('selected');
+        label.querySelector('input').checked = true;
+    }
+
+    function corrigirQuiz() {
+        let acertos = 0;
+        const total = 12;
+
+        for (let i = 1; i <= total; i++) {
+            const qId = "q" + i;
+            const inputs = document.getElementsByName(qId);
+            const feedbackDiv = document.getElementById("f" + i);
+            let userAns = null;
+            let labelSelected = null;
+            let labelCorrect = null;
+
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                label.classList.remove('correct-answer', 'wrong-answer', 'was-correct');
+                
+                if (input.checked) {
+                    userAns = input.value;
+                    labelSelected = label;
+                }
+                if (input.value === "1") {
+                    labelCorrect = label;
+                }
+            });
+
+            feedbackDiv.style.display = 'block';
+
+            if (userAns === "1") {
+                acertos++;
+                labelSelected.classList.add('correct-answer');
+                feedbackDiv.className = 'feedback ok';
+                feedbackDiv.innerHTML = "✅ ACERTOU!";
+            } else if (userAns === "0") {
+                labelSelected.classList.add('wrong-answer');
+                labelCorrect.classList.add('was-correct'); 
+                feedbackDiv.className = 'feedback no';
+                feedbackDiv.innerHTML = "❌ RESPOSTA INCORRETA";
+            } else {
+                if(labelCorrect) labelCorrect.classList.add('was-correct');
+                feedbackDiv.className = 'feedback no';
+                feedbackDiv.innerHTML = "⚠️ VOCÊ NÃO RESPONDEU";
+            }
+        }
+
+        const nota = (acertos / total) * 10;
+        const rBox = document.getElementById('result-box');
+        rBox.style.display = 'block';
+        rBox.innerHTML = `
+            <h2 style="color:var(--primary); font-size:3rem; margin:0">${nota.toFixed(1)}</h2>
+            <p style="font-size:1.4rem; color:#000; font-weight:bold;">Você acertou ${acertos} de ${total}!</p>
+            <button onclick="location.reload()" style="padding:15px 30px; border:none; background:#333; color:white; cursor:pointer; margin-top:20px; border-radius:50px; font-size:1.1rem;">REFAZER TESTE</button>
+        `;
+        
+        rBox.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
